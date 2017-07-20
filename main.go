@@ -12,10 +12,10 @@ func main() {
 	pdf.SetFont("Arial", "B", 16)
 
 	data := []string{}
-	for i := 1; i <= 24; i++ {
+	for i := 1; i <= 120; i++ {
 		data = append(data, fmt.Sprintf("entry %d", i))
 	}
-	pages := randomizeData(data, 9)
+	pages := randomizeData(data, 25)
 
 	for _, p := range pages {
 		err := generatePage(pdf, p)
