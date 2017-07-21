@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
+	"errors"
 	"math/rand"
 	"time"
 )
 
-func randomizeData(data []string, nb int) [][]string {
+func randomizeData(data []string, nb int) ([][]string, error) {
 	rand.Seed(time.Now().UTC().UnixNano())
 	l := len(data)
 	nbPages := calcNbPages(l, nb)
@@ -17,13 +17,17 @@ func randomizeData(data []string, nb int) [][]string {
 		result[i] = make([]string, nb)
 	}
 
+	var err error
 	for i := 1; i <= nbOccurences; i++ {
 		for j := 0; j < len(data); j++ {
-			result = injectRecord(result, data[j], 100)
+			result, err = injectRecord(result, data[j], 100)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
-	return result
+	return result, nil
 }
 
 func calcNbPages(l int, nb int) int {
@@ -37,9 +41,9 @@ func calcNbPages(l int, nb int) int {
 	}
 }
 
-func injectRecord(result [][]string, entry string, m int) [][]string {
+func injectRecord(result [][]string, entry string, m int) ([][]string, error) {
 	if m == 0 {
-		log.Fatal("Too many retries")
+		return nil, errors.New("Too many retries")
 	}
 
 	page := rand.Intn(len(result))
@@ -56,5 +60,5 @@ func injectRecord(result [][]string, entry string, m int) [][]string {
 	}
 
 	result[page][position] = entry
-	return result
+	return result, nil
 }

@@ -22,7 +22,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	pages := randomizeData(data, size*size)
+	pages, err := randomizeData(data, size*size)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for _, p := range pages {
 		err := generatePage(pdf, p)
