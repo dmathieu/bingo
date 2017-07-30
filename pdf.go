@@ -14,8 +14,10 @@ func generatePage(pdf *gofpdf.Fpdf, data []string) error {
 		return errors.New("Invalid data number. Need a square number to get equal number of columns and lines")
 	}
 
+	tr := pdf.UnicodeTranslatorFromDescriptor("")
+
 	for i, v := range data {
-		pdf.CellFormat(275/n, 179/n, v, "1", 0, "C", false, 0, "")
+		pdf.CellFormat(275/n, 179/n, tr(v), "1", 0, "C", false, 0, "")
 
 		if (i+1)%int(n) == 0 {
 			pdf.Ln(-1)
